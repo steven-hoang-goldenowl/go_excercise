@@ -39,10 +39,10 @@ class User < ApplicationRecord
   end
 
   def self.top_10_most_followers
-    User.select('users.*, count(users.id) as total')
+    User.select('follower_id, count(follows.follower_id) as total, users.*')
         .joins('JOIN follows ON users.id = follows.follower_id')
-        .group('users.id')
-        .order('users.id ASC')
+        .group('follower_id, users.id')
+        .order('total ASC')
         .limit(10)
   end
 end
