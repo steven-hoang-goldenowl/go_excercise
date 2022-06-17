@@ -37,4 +37,12 @@ class User < ApplicationRecord
   def followers_in_month
     followers.from_this_month
   end
+
+  def self.top_10_most_followers
+    User.select('users.*, count(users.id) as total')
+        .joins('JOIN follows ON users.id = follows.follower_id')
+        .group('users.id')
+        .order('users.id ASC')
+        .limit(10)
+  end
 end
